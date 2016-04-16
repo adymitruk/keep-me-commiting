@@ -12,7 +12,7 @@ const bot = new Bot({
 
 
 new CronJob('* * 18 * * *', function() {
-  (function checkCommits() {
+  (function checkCommits(attempts) {
     request({
       url: `https://api.github.com/users/${argv.g}/events`,
       headers: {
@@ -27,12 +27,14 @@ new CronJob('* * 18 * * *', function() {
         if (lastEvent.public) {
           if (lastEventTime.split('-')[2].split('T')[0] !== now.split('-')[2].split('T')[0]) {
             bot.postMessageToUser(argv.s, `You haven't made any public commits today, I'll check back in an hour.`);
-            setTimeout(checkCommits, 3600000);
+            if (attempts < 2) {
+              setTimeout(checkCommits(attempts + 1), 3600000);
+            }
           } else {
             bot.postMessageToUser(argv.s, `Nice you're keeping your streak alive, you've made at least one public commit today.`);
           }
         }
       }
     });
-  })();
+  })(0);
 }, null, true, 'America/New_York');
