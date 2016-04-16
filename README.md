@@ -14,6 +14,6 @@ Have you made a public commit yet? If not how about making a PR to make this bot
 
 `node index.js -t asfjdsfsdfkljasdflkasd -g wski -s wski`
 
-`-t` is you slackbot token.
+`-t` is your slackbot token.
 `-g` is your github username.
 `-s` is your slack username.
